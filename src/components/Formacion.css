@@ -1,0 +1,59 @@
+.formation-section {
+  padding: 80px 0;
+  background-color: #ffffff;
+}
+
+.formation-image {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.accordion {
+  --bs-accordion-border-width: 0;
+}
+
+
+.accordion-item {
+  background-color: transparent;
+  border-bottom: 1px solid #eee;
+}
+
+.accordion-button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #3D3D3D;
+  background-color: transparent !important;
+  box-shadow: none !important; 
+  padding: 1.5rem 0.5rem;
+}
+
+.accordion-button::after {
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a1da5f'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a1da5f'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-body {
+  padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+  color: #6c757d;
+}
+
+.course-list-accordion {
+  list-style: none;
+  padding-left: 0;
+}
+
+.course-list-accordion li {
+  margin-bottom: 8px;
+  padding-left: 1.2em;
+  position: relative;
+}
+
+.course-list-accordion li::before {
+  content: '✓';
+  color: #a1da5f;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}

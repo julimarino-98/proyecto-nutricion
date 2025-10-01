@@ -1,0 +1,119 @@
+.hero-section {
+  background-color: #F8F6F2;
+  min-height: 100vh;
+  padding: 82px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* --- Estilos de la Presentación --- */
+
+.hero-text .hero-tagline {
+  font-family: 'Montserrat', sans-serif;
+  color: #a1da5f;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.hero-text h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3.2rem;
+  color: #3D3D3D;
+}
+
+.hero-text .lead {
+  font-size: 1.1rem;
+  color: #6c757d;
+  max-width: 500px;
+}
+
+a.hero-cta-button {
+  background-color: #a1da5f;
+  border-color: #a1da5f;
+  font-weight: bold;
+  padding: 12px 30px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(161, 218, 95, 0.3);
+}
+
+a.hero-cta-button:hover {
+  background-color: #8cc44c;
+  border-color: #8cc44c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(161, 218, 95, 0.4);
+}
+
+.hero-image-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 150px;
+  margin-top: 10px;
+}
+
+
+.hero-image {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+  border: 8px solid #a1da5f;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Estilos para la Barra de Servicios --- */
+
+.hero-services-bar {
+  margin-top: 60px;
+  padding: 20px;
+  border: 2px solid #a1da5f;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.service-item {
+  text-align: center;
+  padding: 10px;
+}
+
+.service-item-icon {
+  color: #a1da5f;
+  margin-bottom: 10px;
+}
+
+.service-item h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  color: #3D3D3D;
+  margin-bottom: 5px;
+}
+
+.service-item p {
+  font-size: 0.85rem;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+/* --- Media Queries --- */
+@media (max-width: 991px) {
+  .hero-text h1 { font-size: 2.8rem; }
+  .hero-image { width: 300px; height: 300px; }
+  .hero-services-bar { margin-top: 50px; }
+}
+
+@media (max-width: 767px) {
+  .hero-section { justify-content: flex-start; padding-top: 100px; }
+  .hero-text .lead { margin: 1rem auto; }
+  .hero-image-col { margin-top: 40px; }
+  .hero-image { width: 250px; height: 250px; }
+  .service-item { border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
+  .service-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+}

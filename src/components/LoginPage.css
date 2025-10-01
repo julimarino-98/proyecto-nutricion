@@ -1,0 +1,29 @@
+.login-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-image: url('../assets/background.PNG');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Limita el ancho de la tarjeta de login */
+.login-page-wrapper .card {
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Estilos del botón personalizado */
+.login-btn {
+  background-color: #a1da5f !important;
+  border-color: #a1da5f !important;
+  color: #ffffff;
+}
+
+.login-btn:hover {
+  background-color: #8cc44c !important;
+  border-color: #8cc44c !important;
+}
