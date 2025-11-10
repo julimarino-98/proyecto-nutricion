@@ -1,6 +1,8 @@
 const express = require('express');
+const ObraSocial = require('../models/ObraSocial');
+const auth = require('../middlewares/auth');
+
 const router = express.Router();
-const ObraSocial = require('../models/ObraSocial'); 
 
 // 1. OBTENER TODAS las obras sociales (GET)
 router.get('/', async (req, res) => {
@@ -13,11 +15,13 @@ router.get('/', async (req, res) => {
 });
 
 // 2. CREAR una nueva obra social (POST)
-router.post('/', async (req, res) => {
+router.post('/', auth(['medico', 'secretaria', 'admin']), async (req, res) => {
   const { nombre } = req.body;
+
   if (!nombre) {
     return res.status(400).json({ message: 'El campo nombre es requerido' });
   }
+
   const nuevaObraSocial = new ObraSocial({ nombre });
   try {
     const obraSocialGuardada = await nuevaObraSocial.save();
@@ -31,16 +35,16 @@ router.post('/', async (req, res) => {
 });
 
 // 3. EDITAR una obra social existente (PUT)
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth(['medico', 'secretaria', 'admin']), async (req, res) => {
   const { nombre } = req.body;
   if (!nombre) {
     return res.status(400).json({ message: 'El campo nombre es requerido' });
   }
   try {
     const obraSocialActualizada = await ObraSocial.findByIdAndUpdate(
-      req.params.id, 
+      req.params.id,
       { nombre: nombre },
-      { new: true } 
+      { new: true, runValidators: true }
     );
     if (!obraSocialActualizada) return res.status(404).json({ message: 'Obra social no encontrada' });
     res.json(obraSocialActualizada);
@@ -53,7 +57,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // 4. ELIMINAR una obra social (DELETE)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth(['medico', 'secretaria', 'admin']), async (req, res) => {
   try {
     const obraSocialEliminada = await ObraSocial.findByIdAndDelete(req.params.id);
     if (!obraSocialEliminada) return res.status(404).json({ message: 'Obra social no encontrada' });
