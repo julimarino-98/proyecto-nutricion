@@ -13,7 +13,6 @@ export function AuthProvider({ children }) {
   // Función para simular el login
   const login = (email, password) => {
     // En un futuro, aquí harías una llamada a tu backend
-    // Por ahora, usamos credenciales de ejemplo
     if (email === 'admin@mail.com' && password === 'admin') {
       const userData = { email: 'admin@mail.com', name: 'Admin' };
       setUser(userData); // Guarda los datos del usuario

@@ -41,3 +41,7 @@ yarn-error.log*
 
 # Cache de Vite
 .vite
+
+# --- Ignorar archivos del Backend ---
+/backend/node_modules
+/backend/.env

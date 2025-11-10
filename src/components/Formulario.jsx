@@ -1,12 +1,12 @@
-// src/components/Booking.jsx
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import './Formulario.css';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import './Formulario.css'; // Asegúrate que este archivo exista en la misma carpeta
+
+const API_URL = 'http://localhost:5001/api';
 
 function Formulario() {
-  // Estado para manejar los datos del formulario
   const [formData, setFormData] = useState({
     nombreApellido: '',
     nombrePaciente: '',
@@ -14,37 +14,50 @@ function Formulario() {
     email: '',
     obraSocial: '',
   });
-
-  // Estado para la lógica del calendario y turnos
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null); 
   const [selectedTime, setSelectedTime] = useState('');
   const [availableTimes, setAvailableTimes] = useState([]);
-  
-  // Estado para controlar el flujo del formulario
-  const [step, setStep] = useState(1); // 1: Calendario, 2: Datos personales
+  const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
 
-  // --- SIMULACIÓN DE DATOS (esto vendrá del backend en el futuro) ---
-  const obrasSocialesList = ['OSDE', 'Swiss Medical', 'Galeno', 'Medifé', 'Particular'];
+  // Obras Sociales desde la API
+  const [obrasSocialesList, setObrasSocialesList] = useState([]);
+  const [loadingObrasSociales, setLoadingObrasSociales] = useState(true);
 
-  // Simula la búsqueda de horarios disponibles cuando cambia la fecha
+  // Cargar Obras Sociales
+  useEffect(() => {
+    const fetchObrasSociales = async () => {
+      try {
+        const response = await fetch(`${API_URL}/obrassociales`);
+        if (!response.ok) throw new Error('Error al cargar obras sociales');
+        const data = await response.json();
+        setObrasSocialesList(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoadingObrasSociales(false);
+      }
+    };
+    fetchObrasSociales();
+  }, []); 
+
+  // Simulación de horarios (próximo paso: conectar a API)
   useEffect(() => {
     if (selectedDate) {
       console.log(`Buscando turnos para: ${selectedDate.toLocaleDateString()}`);
       const exampleTimes = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
       setAvailableTimes(exampleTimes);
       setSelectedTime('');
+    } else {
+      setAvailableTimes([]);
     }
   }, [selectedDate]);
-  // --- FIN DE LA SIMULACIÓN ---
 
-  // Manejador para los campos del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Manejador para la sumisión final del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Cita Solicitada:', {
@@ -55,7 +68,6 @@ function Formulario() {
     setSubmitted(true);
   };
   
-  // Limita el calendario a las próximas 2 semanas
   const minDate = new Date();
   const maxDate = new Date();
   maxDate.setDate(minDate.getDate() + 14);
@@ -64,21 +76,19 @@ function Formulario() {
     <section id="turno" className="booking-section">
       <Container>
         <h2 className="text-center fw-bold mb-5">Agenda tu Turno</h2>
-
         {!submitted ? (
           <Row className="justify-content-center">
-            <Col md={8} lg={6}>
-              {/* PASO 1: SELECCIÓN DE FECHA Y HORA */}
+            <Col md={8} lg={7}> 
               {step === 1 && (
                 <div className="booking-step">
                   <h4 className="text-center">1. Selecciona un día y horario</h4>
-                  <div className="datepicker-container">
-                    <DatePicker
-                      selected={selectedDate}
-                      onChange={(date) => setSelectedDate(date)}
+                  <div className="calendar-wrapper">
+                    <Calendar
+                      value={selectedDate}
+                      onChange={setSelectedDate}
                       minDate={minDate}
                       maxDate={maxDate}
-                      inline
+                      className="react-calendar-override" 
                     />
                   </div>
                   {selectedDate && (
@@ -95,7 +105,7 @@ function Formulario() {
                           </Button>
                         ))
                       ) : (
-                        <p>No hay horarios disponibles para este día.</p>
+                        <p className="text-center mt-3">No hay horarios disponibles para este día.</p>
                       )}
                     </div>
                   )}
@@ -106,13 +116,11 @@ function Formulario() {
                   </div>
                 </div>
               )}
-
-              {/* PASO 2: DATOS PERSONALES */}
               {step === 2 && (
                 <div className="booking-step">
                   <h4 className="text-center">2. Completa tus datos</h4>
                   <p className="text-center text-muted">
-                    Turno para el {selectedDate.toLocaleDateString()} a las {selectedTime} hs.
+                    Turno para el {selectedDate?.toLocaleDateString()} a las {selectedTime} hs.
                   </p>
                   <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
@@ -133,9 +141,11 @@ function Formulario() {
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Obra Social</Form.Label>
-                      <Form.Select name="obraSocial" onChange={handleInputChange} required>
-                        <option value="">Selecciona una opción...</option>
-                        {obrasSocialesList.map(os => <option key={os} value={os}>{os}</option>)}
+                      <Form.Select name="obraSocial" onChange={handleInputChange} required disabled={loadingObrasSociales}>
+                        <option value="">{loadingObrasSociales ? 'Cargando...' : 'Selecciona una opción...'}</option>
+                        {obrasSocialesList.map(os => (
+                          <option key={os._id} value={os.nombre}>{os.nombre}</option>
+                        ))}
                       </Form.Select>
                     </Form.Group>
                     <div className="d-flex justify-content-between">
@@ -148,7 +158,6 @@ function Formulario() {
             </Col>
           </Row>
         ) : (
-          /* MENSAJE DE ÉXITO */
           <Alert variant="success" className="text-center">
             <h5>¡Gracias! Tu cita ha sido solicitada.</h5>
             <p>Recibirás un correo electrónico de notificación en breve y otro cuando la cita sea confirmada. ¡Muchas gracias!</p>
