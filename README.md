@@ -82,3 +82,77 @@ En el directorio del proyecto, puedes ejecutar:
 * `npm run dev`: Inicia la aplicación en modo de desarrollo.
 * `npm run build`: Compila la aplicación para producción en la carpeta `dist`.
 * `npm run preview`: Sirve la build de producción localmente para previsualizarla.
+
+---
+
+## Backend (Express + MongoDB)
+
+El proyecto ahora incluye una API REST construida con **Express**, **Mongoose** y **JWT** para cubrir los requerimientos del trabajo práctico: alta de obras sociales, reserva y confirmación de turnos, y autenticación para el personal (médico/secretaria).
+
+### Puesta en marcha
+
+```bash
+cd backend
+npm install
+cp .env.example .env # Ajusta MONGO_URI y JWT_SECRET
+npm run dev           # Inicia el servidor con nodemon en http://localhost:5001
+```
+
+> El primer usuario administrativo se crea con una petición `POST /api/auth/register`. A partir del segundo registro se exigirá un token de un usuario con rol `admin`.
+
+### Variables de entorno (`backend/.env`)
+
+| Variable      | Descripción                                           |
+| ------------- | ----------------------------------------------------- |
+| `MONGO_URI`   | Cadena de conexión a tu instancia de MongoDB.         |
+| `PORT`        | Puerto (opcional) donde escuchará el servidor Express |
+| `JWT_SECRET`  | Clave secreta usada para firmar y validar los JWT     |
+
+### Endpoints principales
+
+#### Autenticación (`/api/auth`)
+
+| Método | Ruta           | Descripción                                                                    |
+| ------ | -------------- | ------------------------------------------------------------------------------ |
+| POST   | `/register`    | Crea usuarios. Libre solo si no existen usuarios, luego requiere rol `admin`. |
+| POST   | `/login`       | Devuelve token JWT y datos básicos del usuario.                               |
+| GET    | `/me`          | Retorna los datos del usuario autenticado.                                     |
+
+#### Obras Sociales (`/api/obrassociales`)
+
+| Método | Ruta            | Descripción                                                   |
+| ------ | --------------- | ------------------------------------------------------------- |
+| GET    | `/`             | Lista ordenada de obras sociales (pública).                   |
+| POST   | `/`             | Alta de obra social (requiere token de médico/secretaria).    |
+| PUT    | `/:id`          | Modificación de obra social existente (con autenticación).    |
+| DELETE | `/:id`          | Eliminación de obra social (con autenticación).               |
+
+#### Turnos (`/api/turnos`)
+
+| Método | Ruta           | Descripción                                                                 |
+| ------ | -------------- | --------------------------------------------------------------------------- |
+| GET    | `/`            | Lista turnos por estado/rango de fechas (requiere token).                    |
+| GET    | `/disponibles` | Devuelve agenda libre para las próximas semanas (público).                   |
+| POST   | `/`            | Solicitud pública de turno, valida disponibilidad y datos del paciente.      |
+| PATCH  | `/:id`         | Actualiza datos del turno o cambia estado (requiere token).                  |
+| DELETE | `/:id`         | Marca un turno como cancelado manteniendo el historial (requiere token).     |
+
+Los estados admitidos para un turno son: `solicitado`, `confirmado`, `cancelado` y `completado`. Los horarios disponibles se calculan automáticamente considerando una agenda base de lunes a viernes de 9 a 17 h en bloques de 30 minutos (configurable mediante el parámetro `duracion`).
+
+### Pruebas rápidas con `curl`
+
+```bash
+# Crear usuario inicial (solo la primera vez)
+curl -X POST http://localhost:5001/api/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{"nombre":"Admin","email":"admin@nutri.com","password":"secreta","rol":"admin"}'
+
+# Solicitar turno público
+curl -X POST http://localhost:5001/api/turnos \
+  -H 'Content-Type: application/json' \
+  -d '{"nombre":"Ana","apellido":"Pérez","email":"ana@mail.com","telefono":"1122334455","fechaHora":"2024-07-15T14:00:00.000Z"}'
+
+# Obtener turnos confirmados (requiere token)
+curl http://localhost:5001/api/turnos?estado=confirmado \
+  -H "Authorization: Bearer <TOKEN>"
+```

@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 const ObraSocialSchema = new Schema({
   nombre: {
     type: String,
-    required: true, 
-    trim: true,     
-    unique: true    
+    required: true,
+    trim: true,
+    unique: true
   }
 }, {
-  timestamps: true 
+  timestamps: true
 });
 
 module.exports = mongoose.model('ObraSocial', ObraSocialSchema);
