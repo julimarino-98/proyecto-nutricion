@@ -11,15 +11,15 @@ function LoginPage() {
   const [error, setError] = useState('');
   const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Formulario enviado, intentando hacer login...");
     setError('');
 
-    const success = login(email, password);
-    
-    if (!success) {
-      setError('Correo electrónico o contraseña incorrectos.');
+    const result = await login(email, password);
+
+    if (!result.success) {
+      setError(result.message || 'Correo electrónico o contraseña incorrectos.');
     }
   };
 
