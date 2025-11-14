@@ -132,12 +132,23 @@ npm run dev           # Inicia el servidor con nodemon en http://localhost:5001
 | Método | Ruta           | Descripción                                                                 |
 | ------ | -------------- | --------------------------------------------------------------------------- |
 | GET    | `/`            | Lista turnos por estado/rango de fechas (requiere token).                    |
-| GET    | `/disponibles` | Devuelve agenda libre para las próximas semanas (público).                   |
+| GET    | `/disponibles` | Devuelve agenda libre (lunes a viernes de 9 a 12 y de 14 a 18 hs).          |
 | POST   | `/`            | Solicitud pública de turno, valida disponibilidad y datos del paciente.      |
 | PATCH  | `/:id`         | Actualiza datos del turno o cambia estado (requiere token).                  |
 | DELETE | `/:id`         | Marca un turno como cancelado manteniendo el historial (requiere token).     |
 
-Los estados admitidos para un turno son: `solicitado`, `confirmado`, `cancelado` y `completado`. Los horarios disponibles se calculan automáticamente considerando una agenda base de lunes a viernes de 9 a 17 h en bloques de 30 minutos (configurable mediante el parámetro `duracion`).
+Los estados admitidos para un turno son: `solicitado`, `confirmado`, `cancelado` y `completado`. Los horarios disponibles se calculan automáticamente considerando lunes a viernes con dos bloques: 9 a 12 h y 14 a 18 h. El tamaño del bloque es configurable mediante el parámetro `duracion` (por defecto, 30 minutos).
+
+### Notificaciones por correo
+
+El backend envía dos correos automáticos al paciente (uno cuando solicita el turno y otro cuando el staff confirma o cancela). Para activarlos debes [crear una API key en Resend](https://resend.com/) o en un proveedor compatible con su API y completar estas variables en `backend/.env`:
+
+```
+MAIL_FROM="Nombre <remitente@tudominio.com>"
+RESEND_API_KEY=tu_clave
+```
+
+Si los datos no están configurados, la API seguirá funcionando, pero los correos se omitirán y se mostrará un aviso en la consola del servidor.
 
 ### Pruebas rápidas con `curl`
 

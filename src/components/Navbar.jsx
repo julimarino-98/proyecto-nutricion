@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import "./Navbar.css";
-import logo from "../assets/logo-header.png";
+import logo from "../assets/logo-header.PNG";
 import whatsapp from "../assets/whatsapp.png";
 import instagram from "../assets/instagram.png";
 import linkedin from "../assets/linkedin.png";

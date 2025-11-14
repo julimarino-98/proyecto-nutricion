@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Envelope, Telephone, Whatsapp, Instagram, Linkedin } from 'react-bootstrap-icons';
-import logo from '../assets/logo-header.png';
+import logo from '../assets/logo-header.PNG';
 import './Footer.css';
 
 function Footer() {
