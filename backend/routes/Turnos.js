@@ -3,10 +3,15 @@ const mongoose = require('mongoose');
 const { Turno, ESTADOS_TURNO } = require('../models/Turno');
 const ObraSocial = require('../models/ObraSocial');
 const auth = require('../middlewares/auth');
+const { notificarSolicitudTurno, notificarCambioEstado } = require('../services/notificacionesTurno');
 
 const router = express.Router();
 
 const ESTADOS_VISIBLES = ['solicitado', 'confirmado'];
+const FRANJAS_HORARIAS = [
+  { inicio: 9, fin: 12 },
+  { inicio: 14, fin: 18 }
+];
 
 const esObjectIdValido = valor => mongoose.Types.ObjectId.isValid(valor);
 
@@ -106,8 +111,6 @@ router.get('/disponibles', async (req, res) => {
     const ocupados = new Set(turnosExistentes.map(t => t.fechaHora.toISOString()));
 
     const diasHabiles = [1, 2, 3, 4, 5]; // lunes a viernes
-    const horaInicio = 9;
-    const horaFin = 17; // 17 excluye último horario
 
     const cupos = [];
 
@@ -119,20 +122,22 @@ router.get('/disponibles', async (req, res) => {
         continue;
       }
 
-      const primerHorario = new Date(diaActual);
-      primerHorario.setHours(horaInicio, 0, 0, 0);
+      for (const franja of FRANJAS_HORARIAS) {
+        const inicioFranja = new Date(diaActual);
+        inicioFranja.setHours(franja.inicio, 0, 0, 0);
 
-      const finDelDia = new Date(diaActual);
-      finDelDia.setHours(horaFin, 0, 0, 0);
+        const finFranja = new Date(diaActual);
+        finFranja.setHours(franja.fin, 0, 0, 0);
 
-      for (let slot = new Date(primerHorario); slot < finDelDia; slot = new Date(slot.getTime() + duracion * 60000)) {
-        if (slot <= ahora) {
-          continue;
-        }
+        for (let slot = new Date(inicioFranja); slot < finFranja; slot = new Date(slot.getTime() + duracion * 60000)) {
+          if (slot <= ahora) {
+            continue;
+          }
 
-        const clave = slot.toISOString();
-        if (!ocupados.has(clave)) {
-          cupos.push(clave);
+          const clave = slot.toISOString();
+          if (!ocupados.has(clave)) {
+            cupos.push(clave);
+          }
         }
       }
     }
@@ -199,8 +204,15 @@ router.post('/', async (req, res) => {
       fechaHora: fecha,
       motivo
     });
+    const turnoConObra = await nuevoTurno.populate('obraSocial');
 
-    return res.status(201).json(await nuevoTurno.populate('obraSocial'));
+    try {
+      await notificarSolicitudTurno(turnoConObra);
+    } catch (notificarError) {
+      console.error('No se pudo enviar la confirmación del turno:', notificarError.message);
+    }
+
+    return res.status(201).json(turnoConObra);
   } catch (error) {
     return res.status(500).json({ message: 'Error al solicitar el turno' });
   }
@@ -306,6 +318,14 @@ router.patch('/:id', auth(['medico', 'secretaria', 'admin']), async (req, res) =
 
     if (!turnoActualizado) {
       return res.status(404).json({ message: 'Turno no encontrado' });
+    }
+
+    if (estado) {
+      try {
+        await notificarCambioEstado(turnoActualizado);
+      } catch (notificarError) {
+        console.error('No se pudo enviar la notificación de estado:', notificarError.message);
+      }
     }
 
     return res.json(turnoActualizado);

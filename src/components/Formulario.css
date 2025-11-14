@@ -7,7 +7,7 @@
     Reemplaza esta URL de ejemplo por la URL de tu propia imagen.
     Puedes subir tu imagen a un servicio como Imgur o usar una de tu carpeta /public.
   */
-  background-image: url('C:\Users\USUARIO\Documents\TPO API Nutricion\proyecto-nutricion\src\assets\background.PNG');
+  background-image: url('../assets/background.PNG');
   background-size: cover; /* Cubre toda la sección */
   background-position: center; /* Centra la imagen */
   background-repeat: no-repeat; /* No repite la imagen */
@@ -57,20 +57,25 @@
 
 /* Contenedor principal del calendario */
 .react-calendar-override {
-  width: 100%; 
-  border: none; 
-  border-radius: 8px; 
-  font-family: inherit; 
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
   padding: 10px;
-  background-color: #ffffff; 
+  background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #2f2f2f;
+}
+
+.react-calendar-override button {
+  color: inherit;
 }
 
 /* Botones de navegación (Mes anterior/siguiente) */
 .react-calendar-override .react-calendar__navigation button {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #333;
+  color: #2f2f2f;
   transition: background-color 0.2s;
   border-radius: 5px;
 }
@@ -82,7 +87,7 @@
 .react-calendar-override .react-calendar__month-view__weekdays__weekday abbr {
   text-decoration: none;
   font-weight: 600;
-  color: #6c757d;
+  color: #4a4a4a;
   font-size: 0.85rem;
 }
 
@@ -92,6 +97,7 @@
   padding: 12px 5px;
   transition: background-color 0.2s, color 0.2s;
   border: none;
+  color: #2f2f2f;
 }
 
 /* Días fuera del mes actual */
@@ -102,7 +108,7 @@
 /* Días deshabilitados (minDate/maxDate) */
 .react-calendar-override .react-calendar__tile:disabled {
   background-color: #f8f9fa;
-  color: #ccc;
+  color: #b5b5b5;
   cursor: not-allowed;
 }
 
