@@ -15,6 +15,12 @@ If you are developing a production application, we recommend using TypeScript wi
 
 Este repositorio contiene el código fuente del **frontend** para el sitio web profesional de la Lic. Belén Marino.
 
+## Documentación complementaria 📑
+- Guía paso a paso para levantar el proyecto (frontend y backend): [`docs/levantamiento.md`](docs/levantamiento.md).
+- Colección de Postman lista para importar y guía de uso: [`docs/postman-collection.json`](docs/postman-collection.json) y [`docs/postman.md`](docs/postman.md).
+- Esquema de base de datos y relaciones: [`docs/database/schema.md`](docs/database/schema.md).
+- Script de inicialización de base de datos con usuario admin y obras sociales de ejemplo: `backend/scripts/initDatabase.js` (ejecútalo con `npm run init:db` dentro de `backend`).
+
 ## Tecnologías Utilizadas 🛠️
 
 * **React:** Librería principal para la construcción de la interfaz de usuario.
