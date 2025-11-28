@@ -56,4 +56,4 @@ El script lee las variables opcionales `INIT_ADMIN_EMAIL`, `INIT_ADMIN_PASSWORD`
 | Build de producción del frontend         | `npm run build`                                   |
 | Previsualización de la build (frontend)  | `npm run preview`                                 |
 
-> Tip: si el backend se ejecuta en otro host o puerto, ajusta la variable de entorno usada por el frontend para apuntar a la API correspondiente.
+

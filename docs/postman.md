@@ -5,7 +5,7 @@ En la carpeta `docs/` se incluye el archivo `postman-collection.json` listo para
 ## Cómo importarla
 1. Abre Postman y pulsa **Import**.
 2. Selecciona el archivo `docs/postman-collection.json` de este repositorio.
-3. En la pestaña **Variables** de la colección ajusta `api_base` si tu servidor corre en otra URL y asigna `jwt` con el token devuelto por `POST /auth/login`.
+3. En la pestaña **Variables** de la colección ajusta `api_base` si tu servidor corre en otra URL y asigna `jwt` con el token devuelto por `POST /auth/login`. (En la parte de "Body" cambiar a mail y contraseña con `admin@mail.com` `admin`)
 
 ## Contenido de la colección
 - **Auth**: registro inicial, login y consulta del usuario autenticado.
