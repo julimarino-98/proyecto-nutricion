@@ -40,13 +40,13 @@ Asegúrate de tener instalado **Node.js** (versión 18 o superior). Puedes desca
 1.  **Clonar el Repositorio**
     Abre una terminal y clona este repositorio en tu computadora:
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone https://github.com/julimarino-98/proyecto-nutricion.git
     ```
     *(Si no usas Git, simplemente descarga y descomprime el archivo .zip del proyecto).*
 
 2.  **Navegar a la Carpeta del Proyecto**
     ```bash
-    cd <NOMBRE_DE_LA_CARPETA_DEL_PROYECTO>
+    cd proyecto-nutricion
     ```
 
 3.  **Instalar Dependencias**
