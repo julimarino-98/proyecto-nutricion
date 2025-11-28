@@ -78,8 +78,8 @@ const notificarCambioEstado = async (turno) => {
   const esConfirmado = turno.estado === 'confirmado';
   const subject = esConfirmado ? '¡Tu turno fue confirmado!' : 'Actualización sobre tu turno';
   const mensajePrincipal = esConfirmado
-    ? 'confirmamos tu turno. Te esperamos en el día y horario indicados.'
-    : 'el turno fue cancelado o reprogramado. Si necesitás solicitar uno nuevo, podés hacerlo desde la web.';
+    ? 'Confirmamos tu turno. Te esperamos en el día y horario indicados.'
+    : 'El turno fue cancelado. Si necesitás solicitar uno nuevo, podés hacerlo desde la web.';
 
   await sendEmail({
     to: turno.paciente.email,
