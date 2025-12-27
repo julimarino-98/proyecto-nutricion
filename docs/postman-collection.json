@@ -1,0 +1,239 @@
+{
+  "info": {
+    "name": "API Nutrición",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección para probar el backend Express de la app de Nutrición"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Registro inicial (POST /auth/register)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/auth/register",
+              "host": ["{{api_base}}"],
+              "path": ["auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Admin\",\n  \"email\": \"admin@nutri.com\",\n  \"password\": \"secreta\",\n  \"rol\": \"admin\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login (POST /auth/login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/auth/login",
+              "host": ["{{api_base}}"],
+              "path": ["auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@nutri.com\",\n  \"password\": \"secreta\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Perfil (GET /auth/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/auth/me",
+              "host": ["{{api_base}}"],
+              "path": ["auth", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Obras Sociales",
+      "item": [
+        {
+          "name": "Listar (GET /obrassociales)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{api_base}}/obrassociales",
+              "host": ["{{api_base}}"],
+              "path": ["obrassociales"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear (POST /obrassociales)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/obrassociales",
+              "host": ["{{api_base}}"],
+              "path": ["obrassociales"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cobertura Salud\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar (PUT /obrassociales/:id)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/obrassociales/{{obraSocialId}}",
+              "host": ["{{api_base}}"],
+              "path": ["obrassociales", "{{obraSocialId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cobertura Salud Plus\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar (DELETE /obrassociales/:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/obrassociales/{{obraSocialId}}",
+              "host": ["{{api_base}}"],
+              "path": ["obrassociales", "{{obraSocialId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Turnos",
+      "item": [
+        {
+          "name": "Disponibilidad (GET /turnos/disponibles)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{api_base}}/turnos/disponibles?semanas=2&duracion=30",
+              "host": ["{{api_base}}"],
+              "path": ["turnos", "disponibles"],
+              "query": [
+                { "key": "semanas", "value": "2" },
+                { "key": "duracion", "value": "30" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Solicitar turno (POST /turnos)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/turnos",
+              "host": ["{{api_base}}"],
+              "path": ["turnos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana\",\n  \"apellido\": \"Pérez\",\n  \"email\": \"ana@mail.com\",\n  \"telefono\": \"1122334455\",\n  \"fechaHora\": \"2024-12-20T14:00:00.000Z\",\n  \"motivo\": \"Consulta inicial\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar/filtrar (GET /turnos)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/turnos?estado=confirmado&desde=2024-01-01",
+              "host": ["{{api_base}}"],
+              "path": ["turnos"],
+              "query": [
+                { "key": "estado", "value": "confirmado" },
+                { "key": "desde", "value": "2024-01-01" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar datos/estado (PATCH /turnos/:id)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/turnos/{{turnoId}}",
+              "host": ["{{api_base}}"],
+              "path": ["turnos", "{{turnoId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"confirmado\",\n  \"notasInternas\": \"Confirmado telefónicamente\",\n  \"telefono\": \"1199988877\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancelar (DELETE /turnos/:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": {
+              "raw": "{{api_base}}/turnos/{{turnoId}}",
+              "host": ["{{api_base}}"],
+              "path": ["turnos", "{{turnoId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "api_base", "value": "http://localhost:5001/api" },
+    { "key": "jwt", "value": "" },
+    { "key": "obraSocialId", "value": "" },
+    { "key": "turnoId", "value": "" }
+  ]
+}

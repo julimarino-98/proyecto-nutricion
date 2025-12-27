@@ -15,6 +15,12 @@ If you are developing a production application, we recommend using TypeScript wi
 
 Este repositorio contiene el código fuente del **frontend** para el sitio web profesional de la Lic. Belén Marino.
 
+## Documentación complementaria 📑
+- Guía paso a paso para levantar el proyecto (frontend y backend): [`docs/levantamiento.md`](docs/levantamiento.md).
+- Colección de Postman lista para importar y guía de uso: [`docs/postman-collection.json`](docs/postman-collection.json) y [`docs/postman.md`](docs/postman.md).
+- Esquema de base de datos y relaciones: [`docs/database/schema.md`](docs/database/schema.md).
+- Script de inicialización de base de datos con usuario admin y obras sociales de ejemplo: `backend/scripts/initDatabase.js` (ejecútalo con `npm run init:db` dentro de `backend`).
+
 ## Tecnologías Utilizadas 🛠️
 
 * **React:** Librería principal para la construcción de la interfaz de usuario.
@@ -40,13 +46,13 @@ Asegúrate de tener instalado **Node.js** (versión 18 o superior). Puedes desca
 1.  **Clonar el Repositorio**
     Abre una terminal y clona este repositorio en tu computadora:
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone https://github.com/julimarino-98/proyecto-nutricion.git
     ```
     *(Si no usas Git, simplemente descarga y descomprime el archivo .zip del proyecto).*
 
 2.  **Navegar a la Carpeta del Proyecto**
     ```bash
-    cd <NOMBRE_DE_LA_CARPETA_DEL_PROYECTO>
+    cd proyecto-nutricion
     ```
 
 3.  **Instalar Dependencias**
@@ -132,12 +138,23 @@ npm run dev           # Inicia el servidor con nodemon en http://localhost:5001
 | Método | Ruta           | Descripción                                                                 |
 | ------ | -------------- | --------------------------------------------------------------------------- |
 | GET    | `/`            | Lista turnos por estado/rango de fechas (requiere token).                    |
-| GET    | `/disponibles` | Devuelve agenda libre para las próximas semanas (público).                   |
+| GET    | `/disponibles` | Devuelve agenda libre (lunes a viernes de 9 a 12 y de 14 a 18 hs).          |
 | POST   | `/`            | Solicitud pública de turno, valida disponibilidad y datos del paciente.      |
 | PATCH  | `/:id`         | Actualiza datos del turno o cambia estado (requiere token).                  |
 | DELETE | `/:id`         | Marca un turno como cancelado manteniendo el historial (requiere token).     |
 
-Los estados admitidos para un turno son: `solicitado`, `confirmado`, `cancelado` y `completado`. Los horarios disponibles se calculan automáticamente considerando una agenda base de lunes a viernes de 9 a 17 h en bloques de 30 minutos (configurable mediante el parámetro `duracion`).
+Los estados admitidos para un turno son: `solicitado`, `confirmado`, `cancelado` y `completado`. Los horarios disponibles se calculan automáticamente considerando lunes a viernes con dos bloques: 9 a 12 h y 14 a 18 h. El tamaño del bloque es configurable mediante el parámetro `duracion` (por defecto, 30 minutos).
+
+### Notificaciones por correo
+
+El backend envía dos correos automáticos al paciente (uno cuando solicita el turno y otro cuando el staff confirma o cancela). Para activarlos debes [crear una API key en Resend](https://resend.com/) o en un proveedor compatible con su API y completar estas variables en `backend/.env`:
+
+```
+MAIL_FROM="Nombre <remitente@tudominio.com>"
+RESEND_API_KEY=tu_clave
+```
+
+Si los datos no están configurados, la API seguirá funcionando, pero los correos se omitirán y se mostrará un aviso en la consola del servidor.
 
 ### Pruebas rápidas con `curl`
 
